@@ -6,11 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -30,7 +32,7 @@ import org.kie.dmn.core.impl.DMNPackageImpl;
 import org.kie.dmn.core.impl.DMNRuntimeImpl;
 
 @Path("/dmn")
-public class DMNResource {
+public class GenericDMNEndpoint {
 
     static final DMNRuntime dmnRuntime;
     static {
@@ -56,11 +58,20 @@ public class DMNResource {
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/dmn/{name}")
-    public String dmn(@PathParam("name") String name) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> dmn() {
+        return dmnRuntime.getModels().stream().map(DMNModel::toString).collect(Collectors.toList());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object dmn(Map<String, Object> dmnContext) {
         DMNContext ctx = dmnRuntime.newContext();
-        ctx.set("a name", name);
+        for (Entry<String, Object> entry : dmnContext.entrySet()) {
+            ctx.set(entry.getKey(), entry.getValue());
+        }
         DMNResult evaluateAll = dmnRuntime.evaluateAll(dmnRuntime.getModels().get(0), ctx);
         for (DMNMessage m : evaluateAll.getMessages()) {
             System.out.println(m);
