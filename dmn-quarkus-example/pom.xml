@@ -7,11 +7,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <quarkus.version>0.11.0</quarkus.version>
+        <quarkus.version>0.13.1</quarkus.version>
         <surefire-plugin.version>2.22.0</surefire-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <kie-dmn.version>7.21.0-SNAPSHOT</kie-dmn.version>
+        <submarine.version>8.0.0-SNAPSHOT</submarine.version>
     </properties>
 
     <dependencyManagement>
@@ -40,11 +42,12 @@
       <artifactId>quarkus-resteasy-jsonb</artifactId>
     </dependency>
         
+        
         <dependency>
-	      <groupId>org.kie</groupId>
-	      <artifactId>kie-dmn-core</artifactId>
-	      <version>7.20.0-SNAPSHOT</version>
-	    </dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-dmn-rest-quarkus</artifactId>
+            <version>${submarine.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
