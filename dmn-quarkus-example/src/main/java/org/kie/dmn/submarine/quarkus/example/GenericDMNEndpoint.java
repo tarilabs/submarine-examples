@@ -1,4 +1,4 @@
-package org.quarkus.quickstart;
+package org.kie.dmn.submarine.quarkus.example;
 
 import java.util.List;
 import java.util.Map;
