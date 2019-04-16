@@ -65,5 +65,4 @@ public class GenericDMNEndpoint {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
-
 }
