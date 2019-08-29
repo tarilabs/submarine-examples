@@ -23,7 +23,7 @@
       <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
-        <version>${version.io.quarkus}</version>
+        <version>999-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -34,24 +34,40 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
+      <version>999-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
+      <version>999-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jsonb</artifactId>
+      <version>999-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-kogito</artifactId>
+      <version>999-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>org.kie.kogito</groupId>
-      <artifactId>kogito-dmn</artifactId>
+      <artifactId>kogito-dmn-rest-utils</artifactId>
+      <version>0.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kie.kogito</groupId>
+      <artifactId>kogito-api</artifactId>
+      <version>0.3.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
+      <version>999-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>
@@ -66,6 +82,7 @@
       <plugin>
         <groupId>org.kie.kogito</groupId>
         <artifactId>kogito-maven-plugin</artifactId>
+        <version>0.3.0</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
@@ -79,6 +96,7 @@
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
+        <version>999-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
