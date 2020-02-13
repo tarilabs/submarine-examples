@@ -136,7 +136,7 @@
     <dmn:encapsulatedLogic id="_E309145F-2F87-4A86-95DF-570A5BB7283A" kind="FEEL">
       <dmn:formalParameter id="_1536978F-862F-4151-976D-F9797D9F4E25" name="x" typeRef="Any"/>
       <dmn:literalExpression id="_EA1B2D9D-6560-4DEC-B7EF-F28205E50F8A">
-        <dmn:text>"2020-05-"+x+"T23:59:00.123+00:00"</dmn:text>
+        <dmn:text>"2019-05-"+x+"T23:59:00.123+00:00"</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
