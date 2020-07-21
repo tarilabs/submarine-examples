@@ -1,0 +1,9 @@
+rule Rx
+when
+  String()
+then
+end
+
+query Qx
+  String()
+end
