@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SwaggerClient test</title>
+    <script src="https://unpkg.com/swagger-client"></script>
+    <script>
+      const client = new SwaggerClient('/openapi').then(swaggerClient => {
+  swaggerClient.spec;
+  swaggerClient.errors;
+});
+// We start an 'async' function to use the 'await' keyword
+(async function(){
+  const a = await new SwaggerClient('/openapi');
+  let res = [];
+  const b = a.spec.paths;
+  for (const url in b) {
+    const schema = b[url]["post"]["requestBody"]["content"]["application/json"];
+    if (schema != null) {
+      res.push({url : url, schema : schema});
+    }
+  }
+  console.log(res);
+
+    
+})()
+      
+    </script>
+  </head>
+  <body>
+    check console in browser's dev. tools
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/1.2.2/react-bootstrap.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js" charset="utf-8"></script>
+
+    <script src="https://unpkg.com/@rjsf/core/dist/react-jsonschema-form.js"></script>
+    <script src="https://unpkg.com/swagger-client"></script>
+
+    <script type="text/babel">
+function myOptions() {
+  const options = [
+    {name: 'opt1', descr:'descr1'},
+    {name: 'opt2', descr:'descr2'},
+    {name: 'opt3', descr:'descr3'},
+  ];
+  return options;
+}
+
+async function schemaOptions(){
+  const a = await new SwaggerClient('/openapi');
+  let res = [];
+  const b = a.spec.paths;
+  for (const url in b) {
+    const schema = b[url]["post"]["requestBody"]["content"]["application/json"]["schema"];
+    if (schema != null) {
+      res.push({url : url, schema : schema});
+    }
+  }
+  return res;    
+}
+
+const Form = JSONSchemaForm.default;
+
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myResult = schemaOptions().then(x => this.setState({schemas: x, selected: x[0]}));
+    console.log(this.myResult);
+    this.state = { schemas: [],
+                   selected :  {url : "loading", schema: {
+  "title": "A single-field form",
+  "type": "string"
+}},
+                   requestPayload : {},
+                   responsePayload : "(nothing yet.)"
+                 };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleForm = this.handleForm.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({selected: this.state.schemas.find(x => x.url === event.target.value)});
+  }
+
+  handleSubmit(event) {
+    alert('Your favorite flavor is: ' + JSON.stringify(this.state.selected));
+    event.preventDefault();
+  }
+
+  handleFormChange(a) {
+    const formData = a.formData;
+    this.setState({requestPayload: formData});
+  }
+
+  handleForm(a) {
+    const formData = a.formData;
+    this.setState({requestPayload: formData});
+    const other_params = {
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/json'
+    }, 
+      body: JSON.stringify(formData), 
+      method: "POST",
+      mode: "cors" 
+    };
+    fetch(this.state.selected.url, other_params)
+    .then(function(response) {
+      return response.json();
+    }).then((data) => {
+      console.log(data);
+      this.setState({responsePayload: data});
+    });
+  }
+
+  render() {
+    return (
+<div>
+<div className="row">
+<div className="col">
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Example select</label>
+    <select className="form-control" id="exampleFormControlSelect1" value={this.state.selected.url} onChange={this.handleChange}>
+ {this.state.schemas.map(s => (
+            <option
+              key={s.url}
+              value={s.url}
+            >
+              {s.url}
+            </option>
+          ))}
+          </select>
+  </div>
+</div>
+</div>
+<div className="row">
+<div className="col">
+  <Form schema={this.state.selected.schema} onSubmit={this.handleForm} onChange={this.handleFormChange} formData={this.state.requestPayload} />
+</div>
+<div className="col">
+  <div className="form-group">
+    <label htmlFor="exampleFormControlTextarea1">Form request payload:</label>
+    <textarea className="form-control" id="exampleFormControlTextarea1" rows="10" value={JSON.stringify(this.state.requestPayload, null, 2)} readOnly></textarea>
+  </div>
+  <div className="form-group">
+    <label htmlFor="exampleFormControlTextarea2">Response:</label>
+    <textarea className="form-control" id="exampleFormControlTextarea2" rows="22" value={JSON.stringify(this.state.responsePayload, null, 2)} readOnly></textarea>
+  </div>
+</div>
+</div>
+
+</div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <FlavorForm />,
+  document.getElementById('rrr')
+);
+      </script>
+
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+      <img src="https://developers.redhat.com/blog/wp-content/uploads/2020/03/kogito_icon_rgb_color_default_256px.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+      Demo system
+      </a>
+    </nav>
+    <div class="container" id="rrr"></div>
+
+    
+  </body>
+</html>
